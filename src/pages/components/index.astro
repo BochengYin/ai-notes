@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Components" description="Reusable AI agent components.">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Components</p>
+      <h1>Reusable building blocks for agent workflows.</h1>
+      <p>Skills, commands, agents, hooks, templates, decision cards, and kits that can be copied or adapted.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid">
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge green">Skill</span>
+          <span class="badge">Active</span>
+        </div>
+        <h2>Grill Me</h2>
+        <p>A pre-implementation interview skill that makes an agent clarify a plan before coding.</p>
+        <a href={`${base}components/skills/grill-me/`}>Read component</a>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

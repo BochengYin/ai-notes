@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import GrillMe, { frontmatter } from "../../../../content/components/skills/grill-me.md";
+const artifactUrl = `https://github.com/BochengYin/ai-notes/blob/main/${frontmatter.artifact_path}`;
+const updated = String(frontmatter.updated).slice(0, 10);
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.summary}>
+  <article class="article">
+    <header class="article-header">
+      <div class="badge-row">
+        <span class="badge green">{frontmatter.component_type}</span>
+        <span class="badge blue">{frontmatter.status}</span>
+        <span class="badge">{updated}</span>
+      </div>
+    </header>
+    <GrillMe />
+    <footer class="article-footer">
+      <p>
+        Artifact:
+        <a href={artifactUrl}>{frontmatter.artifact_path}</a>
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
