@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="A test-first development skill focused on observable behavior, tracer bullets, and vertical red-green loops."><title>TDD | AI Notes</title><link rel="stylesheet" href="/ai-notes/_astro/index.B-cd_Hrz.css"></head> <body> <div class="site-shell"> <header class="site-header"> <a class="brand" href="/ai-notes/"> <span class="brand-mark">AI</span> <span> <strong>AI Notes</strong> <small>Field notes for practical AI builders</small> </span> </a> <nav class="site-nav" aria-label="Main navigation"> <a href="/ai-notes/agentic-coding/">Agentic Coding</a> <a href="/ai-notes/ai-engineering/">AI Engineering</a> <a href="/ai-notes/experiments/">Experiments</a> </nav> </header> <main>  <article class="article"> <header class="article-header"> <div class="badge-row"> <span class="badge green">skill</span> <span class="badge blue">verified</span> <span class="badge">2026-06-22</span> </div> </header> <h1 id="tdd">TDD</h1>
+<h2 id="what-it-is">What It Is</h2>
+<p>This is a test-driven development skill from Matt Pocock’s skills repository.</p>
+<p>The core idea is behavior-first development: write one test for one visible behavior, make that test pass with the smallest useful implementation, then repeat. The skill pushes the agent toward public interfaces and integration-style tests instead of tests that are tightly coupled to implementation details.</p>
+<h2 id="my-takeaway">My Takeaway</h2>
+<p>The most useful term in this skill is <code>tracer bullet</code>.</p>
+<p>The term comes from <em>The Pragmatic Programmer</em> by Andrew Hunt and David Thomas. Their software analogy comes from tracer ammunition: visible rounds let you see where the real rounds are going, then adjust quickly under real conditions. In software, a tracer bullet is a thin working path through the real system.</p>
+<p>After switching into software engineering, this term became a very useful mental model for me. Normal feature work should prove the vertical path first: router, server, domain logic, database, and back through the public interface. Once that path works end to end, the rest of the behavior can be added incrementally.</p>
+<p>Matt’s observation is precise for agents. Agents often drift into horizontal test creation: write a batch of imagined tests first, then fill in code later. That looks productive, but it can create tests for the shape of the implementation rather than the behavior of the system. The tracer bullet loop forces the agent to learn from one red-green cycle before writing the next test.</p>
+<h2 id="example">Example</h2>
+<p>Imagine adding a simple <code>POST /transfers</code> endpoint.</p>
+<p>Start with one tracer bullet test:</p>
+<ul>
+<li>Red: a user can submit a valid transfer request and receive a created transfer id.</li>
+<li>Green: route the request through the handler, service, and database with the smallest implementation that makes the behavior pass.</li>
+</ul>
+<p>That first test proves the path works end to end. After that, add one behavior at a time:</p>
+<ul>
+<li>reject insufficient balance</li>
+<li>reject invalid destination account</li>
+<li>record an audit event</li>
+<li>make duplicate request handling idempotent</li>
+</ul>
+<p>Each new behavior gets its own red-green loop. The test names stay close to user-visible behavior, and the implementation grows from real feedback instead of a guessed test matrix.</p>
+<h2 id="notes">Notes</h2>
+<p>This skill is useful when the agent is about to build or fix behavior where tests should guide the implementation. I would use it when I want a vertical slice first, especially in repo areas where integration boundaries matter.</p>
+<h2 id="provenance">Provenance</h2>
+<p>This component is based on Matt Pocock’s <code>tdd</code> skill.</p>
+<p>The tracer bullet explanation references <em>The Pragmatic Programmer</em> by Andrew Hunt and David Thomas and the Artima interview where they explain tracer bullets as a feedback technique for software development.</p>
+<p>Sources:</p>
+<ul>
+<li>Matt Pocock, <code>tdd</code> skill: <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md">mattpocock/skills/skills/engineering/tdd/SKILL.md</a></li>
+<li>Artima interview: <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Tracer Bullets and Prototypes</a></li>
+<li>O’Reilly book listing: <a href="https://www.oreilly.com/library/view/the-pragmatic-programmer/9780135956977/f_0030.xhtml">The Pragmatic Programmer, Topic 12: Tracer Bullets</a></li>
+</ul> <footer class="article-footer"> <p>
+Source:
+<a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md">Matt Pocock's TDD skill</a> </p> </footer> </article>  </main> </div> </body></html>
