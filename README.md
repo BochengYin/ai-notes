@@ -6,12 +6,18 @@ This repository is a public notebook for practical AI building workflows, reusab
 
 ## Structure
 
-- `content/field-notes/`: practical notes and cases.
-- `content/components/`: reusable agent components such as skills, commands, agents, hooks, templates, decision cards, and kits.
-- `content/experiments/`: short experiment writeups.
+- `content/`: public source notes and indexes.
+- `content/components/`: reusable components that can be nested inside topic areas.
+- `content/experiments/`: experiment writeups.
 - `artifacts/`: reusable files that readers or agents can copy.
 - `templates/`: authoring templates.
 - `src/`: Astro site shell.
+
+The public site is organized by three reader-facing areas:
+
+- Agentic Coding
+- AI Engineering
+- Experiments
 
 ## Local Development
 
@@ -25,4 +31,3 @@ npm run dev
 ```bash
 npm run build
 ```
-

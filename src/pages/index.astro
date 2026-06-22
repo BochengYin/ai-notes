@@ -9,15 +9,15 @@ const base = import.meta.env.BASE_URL.endsWith("/")
   <section class="hero">
     <div>
       <p class="eyebrow">AI Field Notes</p>
-      <h1>Practical notes for building with AI agents.</h1>
+      <h1>Learning notes on agentic coding and AI engineering.</h1>
       <p>
-        A public notebook for reusable agent components, field-tested workflows, and small experiments.
-        The first published component is a planning skill for turning vague ideas into implementation-ready specs.
+        A public learning journal for practical AI building: how I use coding agents, how I study AI engineering
+        patterns, and what I learn from running my own experiments.
       </p>
     </div>
     <div class="meta-box">
-      <strong>Current focus</strong>
-      <span>Agentic coding workflows, reusable skills, and the boundary between planning, implementation, and verification.</span>
+      <strong>Structure</strong>
+      <span>Notes are organized by topic first. Reusable components, such as skills or MCP patterns, live inside those topic areas.</span>
     </div>
   </section>
 
@@ -25,30 +25,32 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     <div class="grid">
       <article class="card">
         <div class="badge-row">
-          <span class="badge green">Skill</span>
+          <span class="badge green">Active</span>
+          <span class="badge">Skills / MCP / Hooks</span>
+        </div>
+        <h2>Agentic Coding</h2>
+        <p>Notes on the agent workflows I actually use: favorite skills, MCP, hooks, subagents, and context management.</p>
+        <a href={`${base}agentic-coding/`}>Open Agentic Coding</a>
+      </article>
+
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge blue">Planned</span>
+          <span class="badge">RAG / Loops</span>
+        </div>
+        <h2>AI Engineering</h2>
+        <p>Study notes on RAG, loop engineering, evaluation, and enterprise AI implementation patterns.</p>
+        <a href={`${base}ai-engineering/`}>Open AI Engineering</a>
+      </article>
+
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge">Lab</span>
           <span class="badge">Active</span>
         </div>
-        <h2>Grill Me</h2>
-        <p>A pre-implementation interview skill that turns vague plans into implementation-ready specs.</p>
-        <a href={`${base}components/skills/grill-me/`}>Read component</a>
-      </article>
-
-      <article class="card">
-        <div class="badge-row">
-          <span class="badge blue">Components</span>
-        </div>
-        <h2>Components</h2>
-        <p>Reusable skills, commands, agents, hooks, templates, decision cards, and kits.</p>
-        <a href={`${base}components/`}>Browse components</a>
-      </article>
-
-      <article class="card">
-        <div class="badge-row">
-          <span class="badge">Coming soon</span>
-        </div>
         <h2>Experiments</h2>
-        <p>Short writeups from tests, prototypes, and applied AI system experiments.</p>
-        <a href={`${base}experiments/`}>View experiments</a>
+        <p>Experiments from my own GitHub projects, starting with AI Wiki Toolkit as a memory research project.</p>
+        <a href={`${base}experiments/`}>Open Experiments</a>
       </article>
     </div>
   </section>

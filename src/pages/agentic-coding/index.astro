@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout title="Agentic Coding" description="Notes on practical coding-agent workflows.">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Agentic Coding</p>
+      <h1>How I use agents to code.</h1>
+      <p>
+        This section collects my practical notes on coding-agent workflows. It includes reusable components,
+        but the organizing idea is the work itself: skills, MCP, hooks, subagents, and context management.
+      </p>
+    </div>
+    <div class="meta-box">
+      <strong>Current published component</strong>
+      <span>Grill Me, a pre-implementation interview skill for clarifying plans before implementation.</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid">
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge green">Skill</span>
+          <span class="badge">Active</span>
+        </div>
+        <h2>Grill Me</h2>
+        <p>A pre-implementation interview skill that turns vague plans into implementation-ready specs.</p>
+        <a href={`${base}components/skills/grill-me/`}>Read component</a>
+      </article>
+
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge">Planned</span>
+        </div>
+        <h2>MCP</h2>
+        <p>Notes on using MCP as the bridge between coding agents, tools, data sources, and workflow APIs.</p>
+      </article>
+
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge">Planned</span>
+        </div>
+        <h2>Hooks</h2>
+        <p>Notes on deterministic automation around agent tool calls: checks, formatting, guardrails, and logs.</p>
+      </article>
+
+      <article class="card">
+        <div class="badge-row">
+          <span class="badge">Planned</span>
+        </div>
+        <h2>Subagents</h2>
+        <p>Notes on context isolation, specialized review, and delegating noisy work without polluting the main thread.</p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+

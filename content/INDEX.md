@@ -1,14 +1,14 @@
 # AI Notes Index
 
-## Components
+## Agentic Coding
 
 - [Grill Me](components/skills/grill-me.md): a pre-implementation interview skill for turning vague plans into implementation-ready specs.
 
-## Field Notes
+## AI Engineering
 
-No public field notes yet.
+- RAG notes: planned.
+- Loop engineering notes: planned.
 
 ## Experiments
 
-No public experiments yet.
-
+- AI Wiki Toolkit: planned experiment notes on agent memory and knowledge workflows.
