@@ -5,33 +5,291 @@ const base = import.meta.env.BASE_URL.endsWith("/")
   : `${import.meta.env.BASE_URL}/`;
 ---
 
-<BaseLayout title="Skills" description="Reusable agent skills inside the Agentic Coding notes.">
-  <section class="hero">
-    <div>
+<BaseLayout title="Skills Learning" description="Learning notes on agent skills inside Agentic Coding.">
+  <section class="docs-page">
+    <div class="docs-topline">
       <p class="eyebrow">Agentic Coding / Skills</p>
-      <h1>Reusable skills I actually use.</h1>
-      <p>
-        This page collects agent skills as components inside the broader Agentic Coding section.
-        Skills are not the top-level structure of the site; they are reusable building blocks inside my notes.
-      </p>
+      <a class="button-link outline" href={`${base}agentic-coding/skills/verified/`}>Verified Skills</a>
     </div>
-    <div class="meta-box">
-      <strong>First component</strong>
-      <span>Grill Me: a pre-implementation interview skill for clarifying a plan before coding.</span>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="grid">
-      <article class="card">
-        <div class="badge-row">
-          <span class="badge green">Skill</span>
-          <span class="badge">Active</span>
-        </div>
-        <h2>Grill Me</h2>
-        <p>A pre-implementation interview skill that turns vague plans into implementation-ready specs.</p>
-        <a href={`${base}components/skills/grill-me/`}>Read component</a>
+    <div class="docs-layout">
+      <article class="docs-main">
+        <header class="docs-header">
+          <h1>Skills Learning</h1>
+          <p>
+            My notes on what agent skills are, why they matter, and how I test them inside real
+            agentic coding workflows.
+          </p>
+        </header>
+
+        <section class="docs-section" id="recommended-reading">
+          <h2>Recommended Reading</h2>
+          <div class="reference-grid">
+            <a class="reference-card" href="https://agentskills.io/home#why-agent-skills">
+              <span class="reference-source">Agent Skills</span>
+              <strong>Agent Skills Overview</strong>
+              <p>
+                The open Agent Skills standard, originally developed by Anthropic and supported
+                by Codex, for packaging agent instructions, resources, and workflows.
+              </p>
+              <span class="reference-domain">agentskills.io</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="docs-section" id="my-takeaway">
+          <h2>My Takeaway</h2>
+          <h3>Notes from the Agent Skills docs</h3>
+          <h4>Best practices</h4>
+          <p>
+            Writing a skill is already a small task. Codex has a built-in
+            <a href="https://developers.openai.com/codex/skills">$skill-creator</a>, Anthropic
+            publishes an official
+            <a href="https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md">skill-creator</a>
+            for turning a workflow into a reusable component.
+          </p>
+          <p>
+            The Agent Skills
+            <a href="https://agentskills.io/specification#progressive-disclosure">specification</a>
+            recommends keeping <code>SKILL.md</code> small: core instructions only, under 500
+            lines and around 5,000 tokens. My rule is to keep the every-run instructions in
+            <code>SKILL.md</code>, then move long references, schemas, templates, examples, or
+            API details into <code>references/</code> or <code>assets/</code>. The important part
+            is telling the agent exactly when to load each file.
+          </p>
+          <pre class="structure-block"><code>skill-name/
+├── SKILL.md       # required: metadata + core instructions
+├── scripts/       # optional: repeatable executable helpers
+├── references/    # optional: longer docs loaded only when needed
+├── assets/        # optional: templates and output resources
+└── ...</code></pre>
+          <p class="source-note">
+            Adapted from the <a href="https://agentskills.io/home#what-are-agent-skills">Agent Skills Overview</a>.
+          </p>
+          <h4>Add what the agent lacks</h4>
+          <p>
+            A good skill should spend its tokens on the parts the agent would otherwise get wrong.
+            PDF extraction is a simple example. The agent already knows what a PDF is, but it may
+            still choose a weak path: read the file directly, lose page boundaries, miss tables, or
+            treat a scanned PDF as if it had embedded text.
+          </p>
+          <p>
+            The useful skill content is the operational choice: use <code>pdfplumber</code> for
+            text-based PDFs, preserve page markers for later citations, and fall back to OCR with
+            <code>pdf2image</code> and <code>pytesseract</code> only when the document is scanned
+            or extraction is sparse. That is the kind of instruction the model benefits from.
+          </p>
+          <h4>Match defaults to risk</h4>
+          <p>
+            Writing a skill has the same ambiguity problem as prompting: too many equal-looking
+            options make the agent slower and less consistent. Pick a default path, then tighten
+            the instructions only when the risk requires it. For PDF extraction, the useful default
+            is "use <code>pdfplumber</code> for text PDFs; use OCR only for scanned PDFs." For a
+            database migration, the skill should give the exact command and sequence because the
+            operation is fragile and order-dependent.
+          </p>
+          <h4>Start specific, then generalize</h4>
+          <p>
+            I slightly reinterpret the advice to favor procedures over declarations. I would start
+            by writing down the specific task that actually worked, then generalize it into a
+            reusable procedure. The raw material should be concrete; the final skill should teach
+            the agent an approach that survives new inputs.
+          </p>
+          <h4>Gotchas prevent repeated failures</h4>
+          <p>
+            A gotchas section is where past failures become future guardrails. These should be
+            concrete edge cases the agent has already missed: soft deletes, inconsistent IDs across
+            services, misleading health checks, repo-specific validation rules, or any convention
+            that breaks reasonable assumptions. If the trigger is non-obvious, keep the gotcha in
+            <code>SKILL.md</code> so the agent sees it before making the same mistake again.
+          </p>
+          <h4>Templates become interfaces</h4>
+          <p>
+            Templates are useful beyond formatting. They tell the model what shape the work should
+            take, and structured output can become input for another function, workflow, or skill.
+            Short templates can live inline; longer or conditional templates belong in
+            <code>assets/</code> and should be loaded only when needed.
+          </p>
+          <h4>Optimizing descriptions</h4>
+          <p>
+            The <code>name</code> and <code>description</code> fields, written in YAML
+            frontmatter, matter more than they look. Progressive disclosure means the agent starts
+            a session with only those small metadata fields, then loads the full skill body only
+            when the task matches. A precise description is the routing layer.
+          </p>
+          <p>
+            The
+            <a href="https://agentskills.io/skill-creation/optimizing-descriptions">description optimization guide</a>
+            is basically evaluation-driven development for triggering. Build prompts that should
+            trigger the skill and near-miss prompts that should not. Run them, observe trigger
+            rates, then improve the description instead of guessing.
+          </p>
+          <h4>Evaluating skills</h4>
+          <p>
+            The same loop applies to
+            <a href="https://agentskills.io/skill-creation/evaluating-skills">skill output quality</a>:
+            run the task with the skill, compare it against a baseline or expected result, then
+            update the description, instructions, gotchas, scripts, or templates. A planning skill
+            like <a href={`${base}components/skills/grill-me/`}>Grill Me</a> can help generate
+            realistic test scenarios before the agent runs the evals.
+          </p>
+          <h4>Using scripts</h4>
+          <p>
+            Skills can also bundle scripts when the work should be repeatable instead of rewritten
+            every time. For one-off Python tools, <code>uvx</code> can run packages in isolated
+            environments. For bundled Python scripts, <code>uv run</code> can execute a script with
+            inline dependencies, which keeps the skill self-contained and easier for the agent to
+            use correctly.
+          </p>
+          <h3>My own thoughts</h3>
+          <h4>Reuse is the point</h4>
+          <p>
+            The useful move is reuse. When I notice repeated work, I would ask the agent to turn
+            that workflow into a skill, then use the skill again as a review pass, implementation
+            checklist, or repo-wide audit.
+          </p>
+          <h4>A skill has its own SDLC</h4>
+          <p>
+            I should treat skill creation as a small software lifecycle, not a one-time prompt
+            rewrite. The flow starts when real work exposes a repeated workflow, a repeated agent
+            correction, or a reusable review checklist.
+          </p>
+          <div class="sdlc-diagram" aria-label="Skill SDLC diagram">
+            <div class="sdlc-main-flow">
+              <article class="sdlc-node">
+                <span class="sdlc-kicker">01 Component</span>
+                <strong>Discover from real work</strong>
+                <p>
+                  Start from an actual task. Capture the steps that worked, corrections I gave the
+                  agent, input/output shape, and repo-specific constraints.
+                </p>
+              </article>
+              <article class="sdlc-node">
+                <span class="sdlc-kicker">02 Component</span>
+                <strong>Draft with a skill creator</strong>
+                <p>
+                  Turn concrete examples into a reusable procedure. Decide where the agent gets
+                  freedom and where exact commands, order, or validation gates are required.
+                </p>
+              </article>
+              <article class="sdlc-node">
+                <span class="sdlc-kicker">03 Component</span>
+                <strong>Package resources</strong>
+                <p>
+                  Keep <code>SKILL.md</code> focused. Add <code>references/</code> for domain
+                  detail, <code>scripts/</code> for deterministic checks, and
+                  <code>assets/</code> for templates or reusable output shapes.
+                </p>
+              </article>
+              <article class="sdlc-node">
+                <span class="sdlc-kicker">04 Gate</span>
+                <strong>Test by running it</strong>
+                <p>
+                  Run the skill a few times on realistic tasks. Read the execution trace, not just
+                  the final answer. Simple skills may stop here and move into regular use.
+                </p>
+              </article>
+            </div>
+
+            <div class="sdlc-branch">
+              <div class="sdlc-branch-label">Complex or failure-prone skill branch</div>
+              <div class="sdlc-branch-grid">
+                <article class="sdlc-node sdlc-node-compact">
+                  <strong>Isolate the testbed</strong>
+                  <p>Use a fresh repo, fixture workspace, or worktree so the eval starts clean.</p>
+                </article>
+                <article class="sdlc-node sdlc-node-compact">
+                  <strong>Run eval cases</strong>
+                  <p>
+                    Include should-trigger prompts, near-misses, normal cases, edge cases, and one
+                    messy realistic case with paths or partial context.
+                  </p>
+                </article>
+                <article class="sdlc-node sdlc-node-compact">
+                  <strong>Compare and grade</strong>
+                  <p>
+                    Compare with-skill vs without-skill, or new skill vs old snapshot. Inspect
+                    artifacts, assertions, timing, and failure traces.
+                  </p>
+                </article>
+              </div>
+            </div>
+
+            <div class="sdlc-feedback">
+              <strong>Feedback loop</strong>
+              <ul class="sdlc-feedback-list">
+                <li>No trigger means revise the description.</li>
+                <li>Wrong path means add a <code>SKILL.md</code> gotcha.</li>
+                <li>Mechanical rule means add or improve a script.</li>
+                <li>Weak output shape means add a template.</li>
+              </ul>
+              <p>Every failure should come back as a sharper component.</p>
+            </div>
+          </div>
+          <h4>Good starting points</h4>
+          <p>
+            Some skills are simple and worth starting on immediately; others are complex enough to
+            deserve scripts, templates, and evals. Either way, the point is the same: package the
+            repeatable parts so the agent saves time and attention, and we can spend more energy on
+            the work we actually enjoy. The two easiest categories to start with are domain
+            expertise and repeated workflows.
+          </p>
+          <h4>Domain expertise becomes reusable</h4>
+          <p>
+            Public skills are usually a starting point. They rarely match the shape of my
+            codebase perfectly, because the valuable part often comes from a specific engineering
+            observation.
+          </p>
+          <ul class="takeaway-list">
+            <li>
+              <strong>Async call chains.</strong>
+              In Python projects, an agent may add <code>asyncio.gather</code> around one layer of
+              API calls, while the next layer still awaits requests one by one. The code looks
+              async, but concurrency does not propagate through the call stack, so performance
+              quietly suffers.
+            </li>
+            <li>
+              <strong>Money and validation.</strong>
+              A PR may define a Pydantic model and still use <code>float</code> for an amount at
+              the API boundary. In banking or payments code, monetary values should be represented
+              with <code>Decimal</code> and validated consistently at the boundary because binary
+              floats cannot represent most decimal fractions exactly. This is the kind of domain
+              convention worth encoding into a Python safety check.
+            </li>
+          </ul>
+          <p>
+            That safety check can include team-agreed conventions: no <code>float</code> for
+            money, explicit <code>Decimal</code> handling for amount fields, async code that
+            preserves concurrency across nested calls, and whatever patterns the repo has learned
+            the hard way. Once those observations are explicit, a useful team-specific skill
+            exists: run it as a review pass and let the agent audit the repo with that lens.
+          </p>
+          <h4>Repeated workflows become reusable</h4>
+          <p>
+            The same idea applies to GitHub work, where the skills integration is especially
+            strong. Actions, deploys, release flows, and other multi-step workflows across
+            multiple repos are good candidates for skills. Instead of triggering one workflow in
+            repo A, waiting for it, clicking the next one in repo B, and losing focus while
+            switching context, making a skill for the sequence can help you focus on the task that
+            actually deserves your attention. "Attention is all you need" applies to engineers
+            during development too.
+          </p>
+          <p>
+            <strong>The most important thing here for engineers is developing the mindset.</strong>
+            When you see repeated work or a workflow that depends on domain expertise, you should
+            start thinking about how to package it as a skill.
+          </p>
+        </section>
+
+        <footer class="next-link">
+          <a href={`${base}agentic-coding/skills/verified/`}>
+            <span>Next</span>
+            <strong>Verified Skills</strong>
+            <small>Skills I have tested or turned into working components.</small>
+          </a>
+        </footer>
       </article>
+
     </div>
   </section>
 </BaseLayout>

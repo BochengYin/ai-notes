@@ -1,16 +1,23 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 ---
 
-<BaseLayout title="Components" description="Reusable AI agent components.">
+<BaseLayout title="Verified Skills" description="Verified agent skills inside the Agentic Coding notes.">
   <section class="hero">
     <div>
-      <p class="eyebrow">Components</p>
-      <h1>Reusable building blocks for agent workflows.</h1>
-      <p>Skills, commands, agents, hooks, templates, decision cards, and kits that can be copied or adapted.</p>
+      <p class="eyebrow">Agentic Coding / Skills / Verified</p>
+      <h1>Verified skills I actually use.</h1>
+      <p>
+        This page collects agent skills as components inside the broader Agentic Coding section.
+        Skills are not the top-level structure of the site; they are building blocks inside my notes.
+      </p>
+    </div>
+    <div class="meta-box">
+      <strong>Current set</strong>
+      <span>Grill Me for planning clarity. TDD for behavior-first implementation loops.</span>
     </div>
   </section>
 
@@ -22,7 +29,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           <span class="badge">Active</span>
         </div>
         <h2>Grill Me</h2>
-        <p>A pre-implementation interview skill that makes an agent clarify a plan before coding.</p>
+        <p>A pre-implementation interview skill that turns vague plans into implementation-ready specs.</p>
         <a href={`${base}components/skills/grill-me/`}>Read component</a>
       </article>
 

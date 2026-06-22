@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Tdd, { frontmatter } from "../../../../content/components/skills/tdd.md";
+const updated = String(frontmatter.updated).slice(0, 10);
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.summary}>
+  <article class="article">
+    <header class="article-header">
+      <div class="badge-row">
+        <span class="badge green">{frontmatter.component_type}</span>
+        <span class="badge blue">{frontmatter.status}</span>
+        <span class="badge">{updated}</span>
+      </div>
+    </header>
+    <Tdd />
+    <footer class="article-footer">
+      <p>
+        Source:
+        <a href={frontmatter.source_url}>Matt Pocock's TDD skill</a>
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
